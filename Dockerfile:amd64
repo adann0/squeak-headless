@@ -1,0 +1,33 @@
+FROM debian:stretch
+
+ENV SQUEAK_VERSION=5.2
+ENV SQUEAK_IMAGE=Squeak$SQUEAK_VERSION-18229-64bit
+ENV SQUEAK_RELEASE=$SQUEAK_IMAGE-201810190412-Linux
+ENV SQUEAK_IMAGE_LOCATION=shared/$SQUEAK_IMAGE.image
+ENV SQUEAK_HOME=/squeak
+ENV SQUEAK_START_SCRIPT=''
+
+WORKDIR $SQUEAK_HOME
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libasound2 \
+    wget \
+    unzip \
+  && wget http://files.squeak.org/$SQUEAK_VERSION/$SQUEAK_IMAGE/$SQUEAK_RELEASE.zip \
+  && unzip $SQUEAK_RELEASE.zip \
+  && mv $SQUEAK_RELEASE/* . \
+  && apt-get remove -y \
+    unzip \
+    wget \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf Squeak$SQUEAK_VERSION-*
+
+ENV PATH="/squeak/bin:${PATH}"
+
+ADD ./docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+VOLUME [ /squeak/shared ]
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
