@@ -9,7 +9,7 @@ For example if your shared Squeak folder is located in /home/$USER/squeak/shared
     docker run --name squeak \
       -v /home/$USER/squeak/shared:/squeak/shared \
       -p 8080:8080 \
-      -d adann0/squeak-headless
+      -d adann0/squeak-headless:armv7
       
 Then your website should be accessible at http://<ip>:8080.
 
