@@ -12,7 +12,14 @@ For example if your shared Squeak folder is located in /home/$USER/squeak/shared
       -d adann0/squeak-headless
       
 Then your website should be accessible at http://<ip>:8080.
-  
+
+# Rebuild the Image
+
+For example on Hypriot OS :
+
+    $ git clone <this repo> && cd <this repo>
+    $ docker build . -f Dockerfile.armv7
+
 # ToDo :
 
     - docker-compose.yml avec Nginx, pull les images sur dockerhub
